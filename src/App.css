@@ -102,7 +102,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 400px;
+  width: 700px;
   padding: 40px;
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.5);
@@ -178,16 +178,16 @@ body {
   background: #fff233;
   display: flex;
   justify-content: space-between;
-  max-width: var(--fixed-width);
+  max-width: 100%;
   margin: 2rem auto;
   align-items: center;
   border-radius: var(--radius);
 }
 .item button,
 .item a {
-  background: transparent;
+  background: #000000;
   border-color: transparent;
-  color: var(--clr-primary-5);
+  color: #ffffff;
   letter-spacing: var(--spacing);
   cursor: pointer;
 }
@@ -209,4 +209,8 @@ body {
 .buttons button {
   max-width: 40%;
   text-align: center;
+}
+
+.btn {
+  color: #000000;
 }

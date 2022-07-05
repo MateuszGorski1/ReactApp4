@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const Form = () => {
   const [showPeople, setShowPeople] = useState(false);
@@ -9,6 +9,7 @@ const Form = () => {
     surname: "",
     email: "",
   });
+  const refInput = useRef(null);
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -21,6 +22,9 @@ const Form = () => {
     setPeople(newPeople);
   };
 
+  useEffect(() => {
+    refInput.current.focus();
+  }, []);
   const submitHandler = (e) => {
     e.preventDefault();
     if (person.name && person.surname && person.email) {
@@ -46,6 +50,7 @@ const Form = () => {
               name="name"
               value={person.name}
               onChange={handleChange}
+              ref={refInput}
             />
             <label>Name</label>
           </div>
@@ -90,7 +95,9 @@ const Form = () => {
                 <h4>Name: {name}</h4>
                 <h4>Surname: {surname}</h4>
                 <h4>Email: {email}</h4>
-                <button onClick={() => removePerson(id)}>Remove</button>
+                <button className="btn" onClick={() => removePerson(id)}>
+                  Remove
+                </button>
               </div>
             );
           })}
