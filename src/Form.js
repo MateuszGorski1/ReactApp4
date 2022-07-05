@@ -1,14 +1,29 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useReducer } from "react";
 
+const reducer = (state, action) => {
+  if (action.type === "ADD") {
+    const newPeople = [...state.people, action.payload];
+    return { ...state, people: newPeople };
+  }
+  if (action.type === "REMOVE") {
+    const newPeople = state.people.filter((p) => p.id !== action.payload);
+    return { ...state, people: newPeople };
+  }
+};
+const defaultState = {
+  people: [],
+};
 const Form = () => {
   const [showPeople, setShowPeople] = useState(false);
-  const [people, setPeople] = useState([]);
+  const [state, dispatch] = useReducer(reducer, defaultState);
+  //const [people, setPeople] = useState([]);
   const [person, setPerson] = useState({
     id: "",
     name: "",
     surname: "",
     email: "",
   });
+
   const refInput = useRef(null);
 
   const handleChange = (e) => {
@@ -17,10 +32,10 @@ const Form = () => {
     setPerson({ ...person, [name]: value });
   };
 
-  const removePerson = (id) => {
-    const newPeople = people.filter((person) => person.id !== id);
-    setPeople(newPeople);
-  };
+  //const removePerson = (id) => {
+  //const newPeople = people.filter((person) => person.id !== id);
+  //setPeople(newPeople);
+  //};
 
   useEffect(() => {
     refInput.current.focus();
@@ -32,7 +47,9 @@ const Form = () => {
         id: new Date().getTime().toString(),
         ...person,
       };
-      setPeople((people) => [...people, newPerson]);
+      dispatch({ type: "ADD", payload: newPerson });
+
+      //setPeople((people) => [...people, newPerson]);
       setPerson({ name: "", surname: "", email: "" });
     } else {
       alert("Please enter value in every field!");
@@ -88,14 +105,17 @@ const Form = () => {
           </div>
         </form>
         {showPeople &&
-          people.map((person) => {
+          state.people.map((person) => {
             const { id, name, surname, email } = person;
             return (
               <div className="item" key={id}>
                 <h4>Name: {name}</h4>
                 <h4>Surname: {surname}</h4>
                 <h4>Email: {email}</h4>
-                <button className="btn" onClick={() => removePerson(id)}>
+                <button
+                  className="btn"
+                  onClick={() => dispatch({ type: "REMOVE", payload: id })}
+                >
                   Remove
                 </button>
               </div>
